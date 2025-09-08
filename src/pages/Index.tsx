@@ -10,6 +10,7 @@ import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('home');
+  const [selectedArtwork, setSelectedArtwork] = useState(null);
 
   const featuredArtworks = [
     {
@@ -19,7 +20,13 @@ const Index = () => {
       currentBid: '2 500 000',
       timeLeft: '2д 14ч',
       image: '/img/93b474c5-2a2b-42d5-b772-650e136b5739.jpg',
-      status: 'active'
+      status: 'active',
+      year: '1889',
+      technique: 'Масло на холсте',
+      size: '80 × 65 см',
+      description: 'Великолепный портрет дамы в золотой раме, выполненный в лучших традициях русской портретной живописи конца XIX века.',
+      provenance: 'Частная коллекция, Москва → Галерея «Искусство», Санкт-Петербург → Текущий владелец',
+      condition: 'Отличное состояние, профессиональная реставрация в 2020 году'
     },
     {
       id: 2,
@@ -305,10 +312,107 @@ const Index = () => {
                     <CardDescription>{artwork.artist}</CardDescription>
                   </CardHeader>
                   <CardFooter>
-                    <Button variant="outline" className="w-full">
-                      <Icon name="Eye" className="h-4 w-4 mr-2" />
-                      Подробнее
-                    </Button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" className="w-full" onClick={() => setSelectedArtwork(artwork)}>
+                          <Icon name="Eye" className="h-4 w-4 mr-2" />
+                          Подробнее
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
+                        <DialogHeader>
+                          <DialogTitle className="font-playfair text-2xl">{artwork.title}</DialogTitle>
+                          <DialogDescription className="text-lg">{artwork.artist}</DialogDescription>
+                        </DialogHeader>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-4">
+                            <div className="aspect-square overflow-hidden rounded-lg">
+                              <img 
+                                src={artwork.image} 
+                                alt={artwork.title}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4 text-center">
+                              <div className="p-4 bg-secondary rounded-lg">
+                                <p className="text-sm text-muted-foreground">Текущая ставка</p>
+                                <p className="text-2xl font-bold text-primary">₽{artwork.currentBid}</p>
+                              </div>
+                              <div className="p-4 bg-secondary rounded-lg">
+                                <p className="text-sm text-muted-foreground">Осталось</p>
+                                <p className="text-xl font-semibold">{artwork.timeLeft}</p>
+                              </div>
+                            </div>
+                            <Button className="w-full" size="lg">
+                              <Icon name="Gavel" className="h-5 w-5 mr-2" />
+                              Сделать ставку
+                            </Button>
+                          </div>
+                          <div className="space-y-6">
+                            <div>
+                              <h3 className="font-playfair text-xl font-semibold mb-3">Детали произведения</h3>
+                              <div className="space-y-3">
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground">Год создания:</span>
+                                  <span className="font-medium">{artwork.year}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground">Техника:</span>
+                                  <span className="font-medium">{artwork.technique}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground">Размер:</span>
+                                  <span className="font-medium">{artwork.size}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground">Состояние:</span>
+                                  <span className="font-medium text-green-600">Отличное</span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div>
+                              <h3 className="font-playfair text-xl font-semibold mb-3">Описание</h3>
+                              <p className="text-muted-foreground leading-relaxed">
+                                {artwork.description}
+                              </p>
+                            </div>
+                            
+                            <div>
+                              <h3 className="font-playfair text-xl font-semibold mb-3">Провенанс</h3>
+                              <p className="text-muted-foreground leading-relaxed">
+                                {artwork.provenance}
+                              </p>
+                            </div>
+                            
+                            <div>
+                              <h3 className="font-playfair text-xl font-semibold mb-3">Состояние</h3>
+                              <p className="text-muted-foreground leading-relaxed">
+                                {artwork.condition}
+                              </p>
+                            </div>
+                            
+                            <div className="pt-4 border-t">
+                              <h3 className="font-playfair text-xl font-semibold mb-3">Дополнительные услуги</h3>
+                              <ul className="space-y-2 text-muted-foreground">
+                                <li className="flex items-center">
+                                  <Icon name="Shield" className="h-4 w-4 mr-2 text-primary" />
+                                  Страхование при доставке
+                                </li>
+                                <li className="flex items-center">
+                                  <Icon name="FileText" className="h-4 w-4 mr-2 text-primary" />
+                                  Сертификат подлинности
+                                </li>
+                                <li className="flex items-center">
+                                  <Icon name="Truck" className="h-4 w-4 mr-2 text-primary" />
+                                  Бесплатная доставка по Москве
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                   </CardFooter>
                 </Card>
               ))}
